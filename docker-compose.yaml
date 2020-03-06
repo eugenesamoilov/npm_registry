@@ -4,6 +4,8 @@ services:
   verdaccio:
     container_name: npm-registry
     build: ./image
+    restart: always
+    user: "root:root"
     extra_hosts:
       - "dc01.devops.lab:10.0.0.105"
     ports:
