@@ -14,8 +14,8 @@
 storage: /verdaccio/storage
 
 auth:
-        #  htpasswd:
-        #file: /verdaccio/conf/htpasswd
+  htpasswd:
+    file: /verdaccio/conf/htpasswd
   ldap:
     type: ldap
     client_options:
@@ -25,13 +25,13 @@ auth:
       adminDn: "cn=svc_verdaccio,OU=SVC,OU=AEB,dc=devops,dc=lab"
       adminPassword: "wVMHvxuht7iOQPXAVpwK99gNPX8O6SS9"
       # Search base for users
-      searchBase: "ou=УПРАВЛЕНИЕ ИННОВАЦИОННОГО РАЗВИТИЯ,ou=Якт,ou=АЭБ,dc=devops,dc=lab"
+      searchBase: "ou=AEB,dc=devops,dc=lab"
       searchFilter: "(cn={{username}})"
       # If you are using groups, this is also needed
-      #groupDnProperty: 'cn'
-      #groupSearchBase: 'ou=AEB,dc=devops,dc=lab'
+      groupDnProperty: 'cn'
+      groupSearchBase: 'ou=AEB,dc=devops,dc=lab'
       # If you have memberOf support on your ldap
-      #searchAttributes: ['*', 'memberOf']
+      searchAttributes: ['*', 'memberOf']
       # Else, if you don't (use one or the other):
       # groupSearchFilter: '(memberUid={{dn}})'
       #
@@ -52,15 +52,14 @@ packages:
     # scoped packages
     access: $authenticated
     publish: $authenticated
-    unpublish: $authenticated
+    unpublish: admin.user
     proxy: npmjs
   '@*/*':
     # scoped packages
     access: $authenticated
     publish: $authenticated
-    unpublish: $authenticated
+    unpublish: admin.user
     proxy: npmjs
-
   '**':
     # allow all users (including non-authenticated users) to read and
     # publish all packages
@@ -72,7 +71,7 @@ packages:
     # allow all known users to publish packages
     # (anyone can register by default, remember?)
     publish: $authenticated
-    unpublish: $authenticated
+    unpublish: admin.user
     # if package is not available locally, proxy requests to 'npmjs' registry
     proxy: npmjs
 
